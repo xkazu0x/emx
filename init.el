@@ -1,6 +1,7 @@
 ;; FONT AND THEME
 (set-frame-font "Iosevka 18" nil t)
-(load-theme 'suixide-dream t)
+;(load-theme 'suixide-dream t)
+(load-theme 'suixide-life t)
 
 ;; INTERACTION ------
 (setq use-short-answers t)
@@ -8,50 +9,51 @@
 (setq initial-scratch-message "")
 
 ;; WINDOW ------
-(setq frame-resize-pixelwise t)
-(setq ns-pop-up-frames nil)
-(setq window-resize-pixelwise nil)
-(setq split-width-threshhold 80)
+;(setq frame-resize-pixelwise t)
+;(setq ns-pop-up-frames nil)
+;(setq window-resize-pixelwise nil)
+;(setq split-width-threshhold 80)
 
 ;; LINES ------
 (setq-default truncate-lines t)
-(setq-default fill-column 80)
-(setq indent-line-function 'insert-tab)
-(setq-default tab-width 4)
-(setq indent-tabs-mode t)
+;(setq-default fill-column 80)
+;(setq indent-line-function 'insert-tab)
 
-(setq-default c-basic-offset 4)
-(c-set-offset 'case-label '4)
+(defun coding-hooks ()
+  (setq-default indent-tabs-mode nil)
+  (setq-default tab-width 4)
+  (setq c-basic-offset 4)
+  (c-set-offset 'substatement-open 0)
+  (c-set-offset 'brace-list-open 0)
+  (c-set-offset 'block-open 0)
+  (c-set-offset 'class-open 0)
+  (c-set-offset 'inline-open 0)
+  (c-toggle-hungry-state 1)
+  (hs-minor-mode t)
+  (abbrev-mode 0)
+  (add-hook 'before-save-hook 'coding-system-hook))
 
-(use-package paren
-  ;; highlight matching delimiters
-  :ensure nil
-  :config
-  (setq show-paren-delay 0.1
-		show-paren-highlight-openparen t
-		show-paren-when-point-inside-paren t
-		show-paren-when-point-in-periphery t)
-  (show-paren-mode 1))
-
-(setq sentence-end-double-space nil)
-(setq bookmark-set-fringe-mark nil)
+(add-hook 'c-mode-hook 'coding-hooks)
+(add-hook 'c++-mode-hook 'coding-hooks)
+	
+;(setq sentence-end-double-space nil)
+;(setq bookmark-set-fringe-mark nil)
 
 ;; SCROLLING --------
 (setq scroll-conservatively 101)
-(setq
- mouse-wheel-follow-mouse 't
- mouse-wheel-progressive-speed nil
- mouse-wheel-scroll-amount '(1 ((shift) . 3) ((control) . 6)))
+(setq mouse-wheel-follow-mouse 't
+      mouse-wheel-progressive-speed nil
+      mouse-wheel-scroll-amount '(1 ((shift) . 3) ((control) . 6)))
 
 ;; BACKUPS/LOCKFILES ---
 (setq create-lockfiles nil
-	  make-backupfiles nil
-	  ;; in case if it is enabled
-	  version-control t
-	  backup-by-copying t
-	  delete-old-versions t
-	  kept-old-versions 5
-	  kept-new-versions 5)
+      make-backupfiles nil
+      ;; in case if it is enabled
+      version-control t
+      backup-by-copying t
+      delete-old-versions t
+      kept-old-versions 5
+      kept-new-versions 5)
 
 ;; BELL/WARNING -----
 (setq visible-bell t)
@@ -73,7 +75,7 @@
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
 (global-display-line-numbers-mode 1)
-(global-hl-line-mode 0)
+(global-hl-line-mode 1)
 ;(ido-mode 1)
 ;(ido-everywhere 1)
 
@@ -95,8 +97,8 @@
 ;; PACKAGES ---------
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-						 ("elpa" . "https://elpa.gnu.org/packages/")
-						 ("org" . "https://orgmode.org/elpa/")))
+			 ("elpa" . "https://elpa.gnu.org/packages/")
+			 ("org" . "https://orgmode.org/elpa/")))
 (package-initialize)
 (unless package-archive-contents
   (package-refresh-contents))
@@ -108,76 +110,73 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 (setq use-package-verbose nil)
+	
+(use-package auto-complete
+  :ensure t
+  :init
+  (progn
+    (ac-config-default)
+    (global-auto-complete-mode t)))
 
+(use-package all-the-icons
+  :if (display-graphic-p))
+	
+(use-package neotree
+  :ensure t
+  :bind (("C-\\" . 'neotree-toggle))
+  :config
+  (custom-set-faces
+   '(neo-file-link-face ((t (:foreground "#617676"))))
+   '(neo-dir-link-face ((t (:foreground "#61586f"))))
+   '(neo-root-dir-face ((t (:foreground "#878480")))))
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow)
+	neo-window-width 32))
+	
 (use-package ivy
   :diminish ivy-mode
   :config
   (ivy-mode 1))
 
+;; (use-package vertico
+;; 	:ensure t
+;; 	:config
+;; 	(setq vertico-cycle t)
+;; 	(setq vertico-resize nil)
+;; 	(vertico-mode 1))
+	
+;; (use-package marginalia
+;;   :ensure t
+;;   :config
+;;   (marginalia-mode 1))
+
 (use-package doom-modeline
+  :ensure t
   :config
   (doom-modeline-mode)
   (setq doom-modeline-height 1
-		doom-modeline-buffer-file-name-style 'relative-from-project
-		doom-modeline-enable-word-count nil
-		doom-modeline-buffer-encoding nil
-		doom-modeline-icon t
-		doom-modeline-modal-icon nil
-		doom-modeline-major-mode-icon t
-		doom-modeline-major-mode-color-icon nil
-		doom-modeline-buffer-state-icon nil
-		doom-modeline-bar-width 3))
+	doom-modeline-buffer-file-name-style 'relative-from-project
+	doom-modeline-enable-word-count nil
+	doom-modeline-buffer-encoding nil
+	doom-modeline-buffer-state-icon nil
+	doom-modeline-icon t
+	doom-modeline-modal-icon nil
+	doom-modeline-major-mode-icon t
+	doom-modeline-major-mode-color-icon nil
+	doom-modeline-vcs-icon t
+	doom-modeline-bar-width 3))
 
-(use-package org)
-
-(use-package org-super-agenda
-  :after org
-  :config
-  (setq org-super-agenda-header-map nil) ;; takes over 'j'
-  ;; (setq org-super-agenda-header-prefix " ◦ ") ;; There are some unicode "THIN SPACE"s after the ◦
-  ;; Hide the thin width char glyph. This is dramatic but lets me not be annoyed
-  (add-hook 'org-agenda-mode-hook
-            #'(lambda () (setq-local nobreak-char-display nil)))
-  (org-super-agenda-mode))
-
-(use-package org-superstar
-  :config
-  (setq org-superstar-leading-bullet " ")
-  (setq org-superstar-special-todo-items t) ;; Makes TODO header bullets into boxes
-  (setq org-superstar-todo-bullet-alist '(("TODO" . 9744)
-                                          ("INPROG-TODO" . 9744)
-                                          ("WORK" . 9744)
-                                          ("STUDY" . 9744)
-                                          ("SOMEDAY" . 9744)
-                                          ("READ" . 9744)
-                                          ("PROJ" . 9744)
-                                          ("CONTACT" . 9744)
-                                          ("DONE" . 9745)))
-  ;; :hook (org-mode . org-superstar-mode)
-  )
-
-;; Removes gap when you add a new heading
-(setq org-blank-before-new-entry '((heading . nil) (plain-list-item . nil)))
-
-(use-package org-modern
-  :hook (org-mode . org-modern-mode)
-  :config
-  (setq
-   ;; org-modern-star '("●" "○" "✸" "✿")
-   org-modern-star '( "⌾" "✸" "◈" "◇")
-   org-modern-list '((42 . "◦") (43 . "•") (45 . "–"))
-   org-modern-tag nil
-   org-modern-priority nil
-   org-modern-todo nil
-   org-modern-table nil))
+(use-package glsl-mode
+  :ensure t)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("f551a7d1e25975d50aea0ecb1415a8b6d170a69a5e8055fb6490aa2ccaa49fa6" "82226998dacd515156ab158c6bc4b62bff168944db76b387f45a4bf536d705e0" default))
  '(package-selected-packages
-   '(org-superstar org-super-agenda org-modern doom-modeline)))
+   '(glsl-mode centaur-tabs doom-modeline all-the-icons neotree auto-complete cape corfu marginalia tree-sitter treesit-auto treesitter-langs treesitter tree-sitter-langs ivy f compat)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
