@@ -1,7 +1,8 @@
 ;; FONT AND THEME
 (set-frame-font "Iosevka 18" nil t)
 ;(load-theme 'suixide-dream t)
-(load-theme 'suixide-life t)
+;(load-theme 'suixide-life t)
+(load-theme 'suixide-will t)
 
 ;; INTERACTION ------
 (setq use-short-answers t)
@@ -28,9 +29,6 @@
   (c-set-offset 'block-open 0)
   (c-set-offset 'class-open 0)
   (c-set-offset 'inline-open 0)
-  (c-toggle-hungry-state 1)
-  (hs-minor-mode t)
-  (abbrev-mode 0)
   (add-hook 'before-save-hook 'coding-system-hook))
 
 (add-hook 'c-mode-hook 'coding-hooks)
@@ -110,28 +108,28 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 (setq use-package-verbose nil)
-	
-(use-package auto-complete
-  :ensure t
-  :init
-  (progn
-    (ac-config-default)
-    (global-auto-complete-mode t)))
+
+;; (use-package auto-complete
+;;   :ensure t
+;;   :init
+;;   (progn
+;;     (ac-config-default)
+;;     (global-auto-complete-mode t)))
 
 (use-package all-the-icons
   :if (display-graphic-p))
 	
-(use-package neotree
-  :ensure t
-  :bind (("C-\\" . 'neotree-toggle))
-  :config
-  (custom-set-faces
-   '(neo-file-link-face ((t (:foreground "#617676"))))
-   '(neo-dir-link-face ((t (:foreground "#61586f"))))
-   '(neo-root-dir-face ((t (:foreground "#878480")))))
-  (setq neo-theme (if (display-graphic-p) 'icons 'arrow)
-	neo-window-width 32))
-	
+;; (use-package neotree
+;;   :ensure t
+;;   :bind (("C-\\" . 'neotree-toggle))
+;;   :config
+;;   (custom-set-faces
+;;    '(neo-file-link-face ((t (:foreground "#617676"))))
+;;    '(neo-dir-link-face ((t (:foreground "#61586f"))))
+;;    '(neo-root-dir-face ((t (:foreground "#878480")))))
+;;   (setq neo-theme (if (display-graphic-p) 'icons 'arrow)
+;; 	neo-window-width 32))
+
 (use-package ivy
   :diminish ivy-mode
   :config
