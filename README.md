@@ -1,1 +1,1 @@
-# sx-emacs
+# emx
