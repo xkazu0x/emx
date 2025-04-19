@@ -5,6 +5,7 @@
       (kl-func    "#888888")
       (kl-main    "#999999")
       (kl-type    "#626b67")
+      ;;(kl-type    "#79241f")
       (kl-comment "#444444")
       (kl-string  "#a5aaa7")
       (kl-line    "#111111")

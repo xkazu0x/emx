@@ -140,7 +140,7 @@
 
 ;;(ido-mode 1)
 ;;(ido-everywhere 1)
-(global-display-line-numbers-mode 1)
+(global-display-line-numbers-mode 0)
 (global-hl-line-mode 1)
 
 (tool-bar-mode -1)
@@ -424,16 +424,16 @@
 ;; -+STYLE+=+---
 ;; + FONT +
 ;;(add-to-list 'default-frame-alist '(font . "Iosevka"))
-;;(set-face-attribute 'default t :font "Iosevka 16")
-(set-frame-font "Iosevka 15" nil t)
+;;(set-face-attribute 'default t :font "Iosevka 14")
+(set-frame-font "Iosevka 14" nil t)
 
 ;; + THEME +
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-;;(load-theme 'kaliburn t)
-(load-theme 'excalibur t)
+(load-theme 'kaliburn t)
+;;(load-theme 'excalibur t)
 ;;(load-theme 'excalibur-4coder t)
 
 ;; (use-package base16-theme
 ;;   :ensure t
 ;;   :config
-;;   (load-theme 'base16-black-metal-marduk t))
+;;   (load-theme 'base16-black-metal-burzum t))
